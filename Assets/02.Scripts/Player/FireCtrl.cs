@@ -26,12 +26,7 @@ public class FireCtrl : MonoBehaviour
     public int maxBulletCount; //최대 소유 가능 총알 개수
     public int carrybulletcount; // 현재 소유하고 있는 총알 개수
 
-    public float retroActionforce; //반동 세기
-    public float retroActionFineSightForce; //정조준 시 반동세기
 
-    [SerializeField] private Vector3 originPos; //본래 포지션 값
-
-    public Vector3 fineSightOriginPos;
 
     public Animator anim;
 
@@ -41,15 +36,13 @@ public class FireCtrl : MonoBehaviour
     public static bool isFineSightMode = false; //정조준
     public static bool isrunning = false; //뛰면서 발사 안됨 
 
-
-    private Recoil recoil;
+    public Vector3 fineSightOriginPos;
 
 
     // Muzzle flash의 Mesh Renderer 컴포넌트 캐싱
 
     private void Start()
     {
-        recoil = GetComponent<Recoil>();
         audio = GetComponent<AudioSource>();
     }
 
@@ -85,49 +78,6 @@ public class FireCtrl : MonoBehaviour
         
     }
 
-    //public void CancelFineSight()
-    //{
-    //    if(isFineSightMode)
-    //    {
-    //        FineSight();
-    //    }
-    //}
-
-    //private void FineSight()
-    //{
-    //    isFineSightMode = !isFineSightMode;
-    //    anim.SetBool("FineSightMode", isFineSightMode); 
-
-    //   if(isFineSightMode)
-    //   {
-    //        StopAllCoroutines();
-    //        StartCoroutine(FineSightActive());
-    //   }
-    //   else
-    //   {
-    //        StopAllCoroutines();
-    //        StartCoroutine(FineSightDeActive());
-    //   }
-
-    //}
-
-    //IEnumerator  FineSightActive()
-    //{
-    //    while(transform.localPosition != fineSightOriginPos)
-    //    {
-    //        transform.localPosition = Vector3.Lerp(transform.localPosition, fineSightOriginPos, 0.2f);
-    //        yield return null;
-    //    }
-    //}
-
-    //IEnumerator  FineSightDeActive()
-    //{
-    //    while (transform.localPosition != originPos)
-    //    {
-    //        transform.localPosition = Vector3.Lerp(transform.localPosition, originPos, 0.2f);
-    //        yield return null;
-    //    }
-    //}
 
     IEnumerator Reload()
     {
@@ -157,44 +107,7 @@ public class FireCtrl : MonoBehaviour
         }
     }
 
-    //IEnumerator RetroActionCoroutine()
-    //{
-    //    Vector3 recoilBack = new Vector3(retroActionforce, originPos.y, originPos.z);
-    //    Vector3 retroActoinRecoilBack = new Vector3(retroActionFineSightForce, fineSightOriginPos.y, fineSightOriginPos.z);
 
-    //    if(!isFineSightMode)
-    //    {
-    //        transform.localPosition = originPos;
-
-    //        while(transform.localPosition.x <= retroActionforce - 0.02f)
-    //        {
-    //            transform.localPosition = Vector3.Lerp(transform.localPosition, recoilBack, 0.4f);
-    //            yield return null;
-    //        }
-    //        while(transform.localPosition != originPos)
-    //        {
-    //            transform.localPosition = Vector3.Lerp(transform.localPosition, originPos, 0.1f);
-    //            yield return null;  
-    //        }
-
-
-    //    }
-    //    else
-    //    {
-    //        transform.localPosition = fineSightOriginPos;
-
-    //        while (transform.localPosition.x <= retroActionFineSightForce - 0.02f)
-    //        {
-    //            transform.localPosition = Vector3.Lerp(transform.localPosition, retroActoinRecoilBack, 0.4f);
-    //            yield return null;
-    //        }
-    //        while (transform.localPosition != fineSightOriginPos)
-    //        {
-    //            transform.localPosition = Vector3.Lerp(transform.localPosition, fineSightOriginPos, 0.1f);
-    //            yield return null;
-    //        }
-    //    }
-    //}
 
     void FireCal()
     {
@@ -221,11 +134,7 @@ public class FireCtrl : MonoBehaviour
 
 
             StopAllCoroutines();
-            //if (isFineSightMode)
-            //{
-            //    StartCoroutine(FineSightActive());
-            //}
-            //StartCoroutine(RetroActionCoroutine());
+            
 
             muzzleFlash.Play();
 

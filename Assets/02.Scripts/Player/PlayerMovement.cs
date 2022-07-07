@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float lookSensativity;
 
-    [SerializeField] private GameObject Gm;
+    //[SerializeField] private GameObject Gm;
 
 
     public float speed = 12f;
@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        Gm.SetActive(true);     
+        //Gm.SetActive(true);     
         // hp 초기화
         currHp = initHp;
         // hpbar 이미지 연결
@@ -133,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
 
         // 게임 종료
         GameMgr.GetInstance().IsGameOver = true;
-        Gm.SetActive(false);
+        //Gm.SetActive(false);
 
     }
 

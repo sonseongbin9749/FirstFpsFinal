@@ -66670,7 +66670,6 @@ GameObject:
   - component: {fileID: 919132149177636980}
   - component: {fileID: 919132149177636979}
   - component: {fileID: 919132149177636981}
-  - component: {fileID: 919132149177636982}
   m_Layer: 0
   m_Name: SubMachineGun
   m_TagString: Untagged
@@ -66699,12 +66698,9 @@ MonoBehaviour:
   currentBulletCount: 30
   maxBulletCount: 0
   carrybulletcount: 1000000
-  retroActionforce: 0.3
-  retroActionFineSightForce: 0.7
-  originPos: {x: 0, y: 0, z: 0}
-  fineSightOriginPos: {x: 0.21, y: 0.27, z: -0.428}
   anim: {fileID: 919132149177636981}
   muzzleFlash: {fileID: 198792769201491111}
+  fineSightOriginPos: {x: 0, y: 0, z: 0}
 --- !u!82 &919132149177636980
 AudioSource:
   m_ObjectHideFlags: 0
@@ -66821,23 +66817,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &919132149177636982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132149177636978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22266c006de29804fbd12cebf638a692, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  recoilX: -2
-  recoilY: 2
-  recoilZ: 0.35
-  snappiness: 6
-  returnSpeed: 2
 --- !u!1 &1125796684610584591
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +17,6 @@ public class FireCtrl : MonoBehaviour
 
     private float currenttime = 0;
 
-    public float accuracy; //정확도
     public float reloadTime; //연사속도                       
 
     public int reloadBulletcount; //총의 재장전 개수
@@ -27,16 +25,22 @@ public class FireCtrl : MonoBehaviour
     public int carrybulletcount; // 현재 소유하고 있는 총알 개수
 
 
+    public Transform cam;
+    Vector3 rot;
 
     public Animator anim;
 
+    //총기반동
+    public float minX, maxX;
+    public float minY, maxY;
+
     public ParticleSystem muzzleFlash;
 
-    private bool isReload = false; //재장전하는동안에는 발사 금지
-    public static bool isFineSightMode = false; //정조준
+    public static bool isReload = false; //재장전하는동안에는 발사 금지
     public static bool isrunning = false; //뛰면서 발사 안됨 
+    public static bool iswalking = false;//걷는중
 
-    public Vector3 fineSightOriginPos;
+    public static bool isaiming = false; //에임당기고 해제
 
 
     // Muzzle flash의 Mesh Renderer 컴포넌트 캐싱
@@ -48,36 +52,75 @@ public class FireCtrl : MonoBehaviour
 
     void Update()
     {
-        
+
+        rot = cam.transform.localRotation.eulerAngles;
+        if (rot.x != 0 || rot.y != 0)
+        {
+            cam.transform.localRotation = Quaternion.Slerp(cam.transform.localRotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * 3);
+        }
         if (isReload == false)
         {
-            // 마우스 왼쪽 버튼 클릭 했을 때, 
-            if (Input.GetMouseButton(0) && isReload == false)
+            if (Input.GetMouseButton(0))
             {
                 if (currentBulletCount > 0)
                 {
-                    if (isrunning == false)
+                    if (isrunning == false && isaiming == true || isrunning == false && iswalking == false && isaiming == false)
                     {
                         FireCal();
                         Fire();
                     }
+                    
 
                 }
             }
-            if (Input.GetKeyDown(KeyCode.R) && isReload == false && currentBulletCount < reloadBulletcount)
+            if (Input.GetMouseButtonDown(1))
             {
                 
+                ADS();
+            }
+            if (Input.GetKeyDown(KeyCode.R) && currentBulletCount < reloadBulletcount)
+            {
+                isaiming = false;
+                anim.SetBool("Aim", false);
                 StartCoroutine(Reload());
             }
-            //if(Input.GetMouseButtonDown(1) && isReload == false)
-            //{
-            //    FineSight();
-            //}
-        }
 
+            Ctrl();
+
+        }
         
     }
 
+    private void ADS()
+    {
+        if (isrunning == false)
+        {
+            isaiming = !isaiming;
+            anim.SetBool("Aim", isaiming);
+        }
+    }
+
+    private void Ctrl()
+    {
+        if (iswalking == false)
+        {
+            anim.SetBool("Walk", false);
+        }
+        if (iswalking == true)
+        {
+            anim.SetBool("Walk", true);
+        }
+        if (isrunning == false)
+        {
+            anim.SetBool("Run", false);
+            anim.SetBool("Idle", false);
+        }
+        if (isrunning == true)
+        {
+            anim.SetBool("Run", true);
+
+        }
+    }
 
     IEnumerator Reload()
     {
@@ -107,8 +150,6 @@ public class FireCtrl : MonoBehaviour
         }
     }
 
-
-
     void FireCal()
     {
         if(currenttime > 0)
@@ -116,7 +157,6 @@ public class FireCtrl : MonoBehaviour
             currenttime -= Time.deltaTime;
         }
     }
-
 
     void Fire()
     {
@@ -129,9 +169,11 @@ public class FireCtrl : MonoBehaviour
 
             currentBulletCount--;
 
+            recoil();
             Instantiate(bulletPrefab, firePos.position, firePos.rotation);
             audio.PlayOneShot(fireSfx, 1f);
 
+            
 
             StopAllCoroutines();
             
@@ -142,6 +184,17 @@ public class FireCtrl : MonoBehaviour
         }
         
     }
+
+    private void recoil()
+    {
+
+        float recX = Random.Range(minX, maxX);
+        float recY = Random.Range(minY, maxY);
+        cam.transform.localRotation = Quaternion.Euler(rot.x - recY, rot.y + recX, rot.z);
+
+    }
+
+    
 
     
 

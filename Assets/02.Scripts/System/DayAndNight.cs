@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class DayAndNight : MonoBehaviour
 {
@@ -11,6 +13,9 @@ public class DayAndNight : MonoBehaviour
 
     private bool isNight = false;
 
+    [SerializeField] private float time;
+
+    [SerializeField] private Text win;
     [SerializeField] private float nightFogDensity;
     private float dayFogDensity;
     [SerializeField] private float fogDensityCalc;
@@ -62,6 +67,21 @@ public class DayAndNight : MonoBehaviour
                 RenderSettings.fogDensity = currentFogDensity;
             }
         }
+
+        if(DayText.day == 7)
+        {
+            win.gameObject.SetActive(true);
+            time += Time.deltaTime;
+            if(time > 7)
+            {
+                DayText.day = 0;
+                SceneManager.LoadScene("StartMenu");
+            }
+            
+        }
+
+        
+
 
 
     }

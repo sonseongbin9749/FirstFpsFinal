@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     //[SerializeField] private GameObject Gm;
 
 
-    public float speed = 12f;
+    public static float speed = 0f;
     public float gravity = -9.81f;
 
     public float JumpHeight = 3f;
@@ -50,18 +50,69 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         Move();
-        
-
     }
 
     
 
     void Move()
     {
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                if (FireCtrl.isaiming == true)
+                {
+                    FireCtrl.isrunning = false;
+                    speed = 1f;
+                }
+                else if (FireCtrl.isaiming == false)
+                {
+                    Running();
+                    FireCtrl.isrunning = true;
+                    FireCtrl.iswalking = false;
+                }
+                
+
+            }
+            else
+            {
+                if (FireCtrl.isaiming == true)
+                {
+                    FireCtrl.isrunning = false;
+                    speed = 1f;
+                }
+                else if(FireCtrl.isaiming == false)
+                {
+                    FireCtrl.isrunning = false;
+                    speed = 5f;
+                }
+
+                    
+                
+                
+            }
+            
+            
+        }
+        else if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A))
+        {
+            speed = 0;
+        }
+
+        if (speed <= 0)
+        {
+            FireCtrl.iswalking = false;
+        }
+        else if(speed > 0 && FireCtrl.isrunning == false)
+        {
+            FireCtrl.iswalking = true;
+        }
+
         isGrounded = Physics.CheckSphere(groundcheck.position, groundDistance, groundMask);
 
         if(isGrounded && velocity.y < 0)
         {
+            
             velocity.y = -2f;
         }
 
@@ -74,29 +125,19 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(JumpHeight * -2f * gravity * 2);
         }
-        if(Input.GetKey(KeyCode.LeftShift))
-        {
-            Running();
-            FireCtrl.isrunning = true;
-            
-        }
-        else if(Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            FireCtrl.isrunning = false;
-            speed = 5;
-        }
-        FireCtrl.isrunning = false;
-
+        
+        
+        
+        
         controller.Move(move * speed * Time.deltaTime);
 
-        velocity.y += gravity* 2 * Time.deltaTime;
+        velocity.y += gravity * 2 * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
     }
 
     private void Running()
     {
-        FireCtrl.isFineSightMode = false;
         speed = 7;
     }
 

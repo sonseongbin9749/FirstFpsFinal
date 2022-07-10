@@ -7,7 +7,10 @@ using TMPro;
 public class GameMgr : MonoBehaviour
 {
 
-    
+    public GameObject gm;
+    public GameObject gm2;
+
+    private bool click = false;
 
     // 점수 텍스트 연결 변수
     public TMP_Text scoreText;
@@ -22,7 +25,6 @@ public class GameMgr : MonoBehaviour
     public static float createTime = 3.0f;
     private float realcurrenttime = 0f;
 
-    public GameObject player;
 
     // 몬스터 출연할 위치 저장 List
     public List<Transform> points = new List<Transform>();
@@ -105,6 +107,21 @@ public class GameMgr : MonoBehaviour
     private void Update()
     {
         
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(!click)
+            {
+                gm.SetActive(true);
+                Time.timeScale = 0f;
+            }
+            else if(click)
+            {
+                gm.SetActive(false);
+                Time.timeScale = 1f;
+            }
+            click = !click;
+        }
+
         realcurrenttime += Time.deltaTime;
 
         if (createTime < realcurrenttime)
@@ -184,5 +201,11 @@ public class GameMgr : MonoBehaviour
     {
         totalScore += score;
         scoreText.text = $"<color=#00ff00>SCORE : </color> <color=#ff0000>{totalScore:#,##0}</color>";
+    }
+
+    public void EXit()
+    {
+        Debug.Log("나가");
+        SceneManager.LoadScene("StartMenu");
     }
 }

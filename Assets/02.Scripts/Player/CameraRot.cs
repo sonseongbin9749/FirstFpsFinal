@@ -20,7 +20,7 @@ public class CameraRot : MonoBehaviour
         mouseSensitivity = 100f;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         Camerarot();   
     }
